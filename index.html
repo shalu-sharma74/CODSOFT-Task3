@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title> Calculator</title>
+  <link rel="stylesheet" href="style.css">
+
+</head>
+<body>
+  <div class="calculator">
+    <div class="display" id="display">0</div>
+    <div class="buttons">
+      <!-- First Row -->
+      <button class="clear">C</button>
+      <button class="delete">⌫</button>
+      <button class="operator">%</button>
+      <button class="operator">÷</button>
+
+      <!-- Second Row -->
+      <button>7</button>
+      <button>8</button>
+      <button>9</button>
+      <button class="operator">×</button>
+
+      <!-- Third Row -->
+      <button>4</button>
+      <button>5</button>
+      <button>6</button>
+      <button class="operator">-</button>
+
+      <!-- Fourth Row -->
+      <button>1</button>
+      <button>2</button>
+      <button>3</button>
+      <button class="operator">+</button>
+
+      <!-- Bottom Row -->
+      <button>0</button>
+      <button>.</button>
+      <button class="equal">=</button>
+    </div>
+  </div>
+
+  <script>
+    const display = document.getElementById("display");
+    const buttons = document.querySelectorAll("button");
+
+    let currentInput = "";
+
+    buttons.forEach(button => {
+      button.addEventListener("click", () => {
+        const value = button.textContent;
+
+        if (value === "C") {
+          // Clear all
+          currentInput = "";
+          display.textContent = "0";
+        } 
+        else if (value === "⌫") {
+          // Delete last character
+          currentInput = currentInput.slice(0, -1);
+          display.textContent = currentInput || "0";
+        } 
+        else if (value === "=") {
+          // Evaluate expression
+          try {
+            const formattedInput = currentInput
+              .replace(/÷/g, "/")
+              .replace(/×/g, "*");
+            const result = eval(formattedInput);
+            display.textContent = result;
+            currentInput = result.toString();
+          } catch {
+            display.textContent = "Error";
+            currentInput = "";
+          }
+        } 
+        else {
+          // Append numbers and operators
+          if (display.textContent === "0" && value !== ".") {
+            currentInput = value;
+          } else {
+            currentInput += value;
+          }
+          display.textContent = currentInput;
+        }
+      });
+    });
+  </script>
+</body>
+</html>
